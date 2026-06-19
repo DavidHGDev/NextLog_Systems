@@ -1,0 +1,23 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    envinonment:
+      POSTGRES_USER: nextlog
+      POSTGRES_PASSWORD: programingAdmin
+      POSTGRES_DB: nextlogSystems
+    volumes:
+      - postgres_data:/var/lib/postgresql
+    ports:
+      - "5432:5433"
+
+  pgadmin:
+    image: dpage/pgadmin4:9.16
+    environment:
+      PGADMIN_DEFAULT_EMAIL: nextlog@systems.com
+      PGADMIN_DEFAULT_PASSWORD: nextlogAdmin  
+    volumes:
+      - pgadmin_data:/var/lib/pgadmin
+volumes:
+  postgres_data:
+  pgadmin:

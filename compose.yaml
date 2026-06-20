@@ -5,19 +5,47 @@ services:
     environment:
       POSTGRES_USER: nextlog
       POSTGRES_PASSWORD: programingAdmin
-      POSTGRES_DB: nextlogSystems
+      POSTGRES_DB: nextlog_db
     volumes:
       - postgres_data:/var/lib/postgresql
     ports:
-      - "5432:5433"
+      - "5432:5432"
 
   pgadmin:
     image: dpage/pgadmin4:9.16
+    container_name: pgadmin4
     environment:
       PGADMIN_DEFAULT_EMAIL: nextlog@systems.com
-      PGADMIN_DEFAULT_PASSWORD: nextlogAdmin  
+      PGADMIN_DEFAULT_PASSWORD: 'nextlogAdmin'  
+    ports:
+      - "5050:80"
     volumes:
       - pgadmin_data:/var/lib/pgadmin
+
+  db:
+    image: mysql:latest
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: 'nextlogAdmin'
+      MYSQL_DATABASE: nextlog_db
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: phpAdmin
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: 'nextlogAdmin'
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+
 volumes:
   postgres_data:
   pgadmin_data:
+  mysql_data:
